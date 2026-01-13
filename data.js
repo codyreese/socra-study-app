@@ -1,6 +1,406 @@
 // SOCRA CCRP Study Data
 // Based on ICH-GCP E6(R3), FDA regulations, and SOCRA content domains
 
+// Study Plans - Based on SOCRA's Three-Read Method
+const studyPlans = {
+    "6week": {
+        title: "6-Week Study Plan (Recommended)",
+        description: "Perfect for most candidates. Balances thorough preparation with manageable daily commitment.",
+        commitment: "1-2 hours per day",
+        weeks: [
+            {
+                week: 1,
+                title: "Week 1: Foundation - Study Start-Up (Part 1)",
+                phase: "First Read",
+                focus: "Understanding",
+                goals: [
+                    "Read Study Guide: Study Start-Up sections",
+                    "Review 15 flashcards on protocols, IRB, and informed consent",
+                    "Take notes on key concepts in your own words",
+                    "Watch any available videos on GCP basics"
+                ],
+                tasks: [
+                    { task: "Read Study Start-Up guide sections", done: false },
+                    { task: "Review flashcards: Study Start-Up (first 15)", done: false },
+                    { task: "Create personal notes on: Protocol requirements", done: false },
+                    { task: "Create personal notes on: IRB process", done: false },
+                    { task: "Create personal notes on: Informed consent elements", done: false }
+                ],
+                dailySchedule: "Day 1-3: Reading (30-45 min/day) | Day 4-5: Flashcards (30 min/day) | Day 6-7: Note-taking & review",
+                tips: "Don't worry about memorizing yet. Focus on understanding the big picture and how concepts connect."
+            },
+            {
+                week: 2,
+                title: "Week 2: Foundation - Study Implementation (Part 1)",
+                phase: "First Read",
+                focus: "Understanding",
+                goals: [
+                    "Read Study Guide: GCP principles, adverse events, data integrity",
+                    "Review 20 flashcards on implementation topics",
+                    "Create flashcards for concepts you find challenging",
+                    "Relate material to your work experience at Huntsman"
+                ],
+                tasks: [
+                    { task: "Read Study Implementation guide (GCP, AEs, ALCOA+)", done: false },
+                    { task: "Review flashcards: Implementation (20 cards)", done: false },
+                    { task: "Create examples from work: Connect to actual trials", done: false },
+                    { task: "Make personal flashcards for weak areas", done: false },
+                    { task: "Practice: Identify SAE vs AE in scenarios", done: false }
+                ],
+                dailySchedule: "Day 1-3: Reading GCP & Data Integrity | Day 4-5: Adverse Events section | Day 6-7: Flashcards & examples",
+                tips: "Your real-world experience is valuable! Connect study material to trials you've worked on."
+            },
+            {
+                week: 3,
+                title: "Week 3: Building Knowledge - Complete First Read",
+                phase: "First Read Complete",
+                focus: "Coverage",
+                goals: [
+                    "Complete remaining Study Implementation and all Study Closure material",
+                    "Review ALL flashcards at least once",
+                    "Take first practice quiz (20 questions)",
+                    "Identify 2-3 weak areas for focused study"
+                ],
+                tasks: [
+                    { task: "Read remaining Implementation sections", done: false },
+                    { task: "Read all Study Closure guide sections", done: false },
+                    { task: "Review ALL flashcards (75 total)", done: false },
+                    { task: "Take Quick Quiz (20 questions)", done: false },
+                    { task: "Write down: Top 3 areas I need to strengthen", done: false }
+                ],
+                dailySchedule: "Day 1-2: Study Closure reading | Day 3-4: Complete all flashcards | Day 5: Quick quiz | Day 6-7: Review weak areas",
+                tips: "After your first practice test, don't be discouraged by your score. You're still in the learning phase!"
+            },
+            {
+                week: 4,
+                title: "Week 4: Deepening Understanding - Second Read",
+                phase: "Second Read",
+                focus: "Connections & Relationships",
+                goals: [
+                    "Re-read ALL study guide materials, focusing on relationships between concepts",
+                    "Review flashcards daily, marking ones you struggle with",
+                    "Take domain-specific practice test",
+                    "Start using AI Tutor for difficult concepts"
+                ],
+                tasks: [
+                    { task: "Re-read Study Start-Up (focus on connections)", done: false },
+                    { task: "Re-read Study Implementation (focus on workflows)", done: false },
+                    { task: "Re-read Study Closure (focus on timelines)", done: false },
+                    { task: "Review ALL flashcards 2x this week", done: false },
+                    { task: "Take domain practice test (choose weakest domain)", done: false },
+                    { task: "Use AI Tutor: Ask about 3 confusing topics", done: false }
+                ],
+                dailySchedule: "Daily: 30 min reading + 30 min flashcards | End of week: Practice test + AI Tutor review",
+                tips: "This is where it clicks! Focus on HOW concepts relate: How does informed consent relate to IRB? How does GCP relate to monitoring?"
+            },
+            {
+                week: 5,
+                title: "Week 5: Testing & Mastery - Third Read",
+                phase: "Third Read",
+                focus: "Application & Testing",
+                goals: [
+                    "Quick third read of study guide (should be familiar now)",
+                    "Take full practice exam (100 questions)",
+                    "Review incorrect answers thoroughly",
+                    "Intensive flashcard review on weak areas",
+                    "Target score: 71%+ (if not, add extra study time)"
+                ],
+                tasks: [
+                    { task: "Quick re-read of all materials (skim familiar, study weak)", done: false },
+                    { task: "Take FULL practice exam (100 questions)", done: false },
+                    { task: "Review EVERY incorrect answer - understand WHY", done: false },
+                    { task: "Intensive review: Flashcards from weak domains", done: false },
+                    { task: "Create action plan if score below 71%", done: false },
+                    { task: "If above 71%: Celebrate! Then keep studying", done: false }
+                ],
+                dailySchedule: "Day 1-2: Quick review read | Day 3: Full practice exam (2-3 hours) | Day 4-7: Review missed questions & weak areas",
+                tips: "If you score 71%+ you're on track! If not, don't panic - add an extra week of study. Most people need multiple practice tests."
+            },
+            {
+                week: 6,
+                title: "Week 6: Final Preparation & Confidence Building",
+                phase: "Polish & Practice",
+                focus: "Exam Readiness",
+                goals: [
+                    "Take second full practice exam",
+                    "Review all flagged flashcards",
+                    "Light review of study guide (no cramming!)",
+                    "Target score: 85%+ for confidence",
+                    "Mental preparation and exam logistics"
+                ],
+                tasks: [
+                    { task: "Take another full practice exam (100 questions)", done: false },
+                    { task: "Review only incorrect answers + flagged cards", done: false },
+                    { task: "Light review: Skim study guide for confidence", done: false },
+                    { task: "Logistics: Confirm exam appointment, location, IDs", done: false },
+                    { task: "Self-care: Good sleep, exercise, healthy meals", done: false },
+                    { task: "Day before exam: Light review only, relax!", done: false }
+                ],
+                dailySchedule: "Day 1-2: Full practice exam | Day 3-4: Review weak spots | Day 5: Light review + logistics | Day 6: Minimal study, relax | Day 7: EXAM DAY!",
+                tips: "If scoring 85%+ consistently, you're READY! The day before: light review only. Trust your preparation!"
+            }
+        ]
+    },
+    "4week": {
+        title: "4-Week Intensive Plan",
+        description: "Accelerated preparation for experienced CRCs. Requires 2-3 hours daily commitment.",
+        commitment: "2-3 hours per day",
+        weeks: [
+            {
+                week: 1,
+                title: "Week 1: Complete First Read - All Domains",
+                phase: "First Read",
+                focus: "Rapid Coverage",
+                goals: [
+                    "Read entire study guide (all three domains)",
+                    "Review 25 flashcards daily",
+                    "Take detailed notes on unfamiliar topics",
+                    "Take baseline Quick Quiz"
+                ],
+                tasks: [
+                    { task: "Read: Study Start-Up (complete)", done: false },
+                    { task: "Read: Study Implementation (complete)", done: false },
+                    { task: "Read: Study Closure (complete)", done: false },
+                    { task: "Review: 25+ flashcards daily", done: false },
+                    { task: "Take: Quick Quiz for baseline", done: false }
+                ],
+                dailySchedule: "2-3 hours daily: Reading (90 min) + Flashcards (45 min) + Notes (30 min)",
+                tips: "This is intense! Break study sessions into 45-minute blocks with 10-minute breaks."
+            },
+            {
+                week: 2,
+                title: "Week 2: Second Read + Testing",
+                phase: "Second Read",
+                focus: "Connections & Practice",
+                goals: [
+                    "Re-read all materials focusing on relationships",
+                    "Review ALL flashcards 2x",
+                    "Take domain-specific tests",
+                    "Identify and address weak areas"
+                ],
+                tasks: [
+                    { task: "Re-read all study guide materials", done: false },
+                    { task: "Review ALL flashcards twice this week", done: false },
+                    { task: "Take: Study Start-Up practice test", done: false },
+                    { task: "Take: Study Implementation practice test", done: false },
+                    { task: "Take: Study Closure practice test", done: false },
+                    { task: "Create targeted notes on weak areas", done: false }
+                ],
+                dailySchedule: "Daily: Reading (60 min) + Flashcards (45 min) + Practice tests (45 min)",
+                tips: "Focus on areas where you score below 75%. Use AI Tutor heavily this week."
+            },
+            {
+                week: 3,
+                title: "Week 3: Full Practice Exams",
+                phase: "Third Read + Testing",
+                focus: "Application",
+                goals: [
+                    "Quick third read of materials",
+                    "Take two full practice exams",
+                    "Thoroughly review all incorrect answers",
+                    "Daily flashcard review"
+                ],
+                tasks: [
+                    { task: "Quick review read of all materials", done: false },
+                    { task: "Take: Full practice exam #1", done: false },
+                    { task: "Review: All incorrect answers from exam #1", done: false },
+                    { task: "Take: Full practice exam #2", done: false },
+                    { task: "Review: All incorrect answers from exam #2", done: false },
+                    { task: "Daily: Flashcard review (30 min)", done: false }
+                ],
+                dailySchedule: "Day 1-2: Full exam #1 + review | Day 3: Targeted study | Day 4-5: Full exam #2 + review | Day 6-7: Weak area focus",
+                tips: "Target 75%+ on first exam, 85%+ on second. If not there, consider adding extra week."
+            },
+            {
+                week: 4,
+                title: "Week 4: Final Polish & Exam Prep",
+                phase: "Mastery",
+                focus: "Confidence & Readiness",
+                goals: [
+                    "Take final practice exam",
+                    "Review only weak areas",
+                    "Flashcard final review",
+                    "Mental and logistical preparation",
+                    "Light review before exam"
+                ],
+                tasks: [
+                    { task: "Take: Final full practice exam", done: false },
+                    { task: "Review: Only weak domains and flagged items", done: false },
+                    { task: "Final flashcard review: Focus on struggles", done: false },
+                    { task: "Confirm: Exam logistics (time, location, IDs)", done: false },
+                    { task: "Practice: Exam timing (allocate 2.5-3 hours)", done: false },
+                    { task: "Day before exam: Minimal study, rest!", done: false }
+                ],
+                dailySchedule: "Day 1-2: Final exam + review | Day 3-5: Targeted weak area study | Day 6: Light review + logistics | Day 7: EXAM!",
+                tips: "If scoring 85%+ you're ready! Day before exam: 30 min light review maximum. Sleep well!"
+            }
+        ]
+    },
+    "8week": {
+        title: "8-Week Relaxed Plan",
+        description: "Thorough preparation with lighter daily commitment. Perfect for busy schedules.",
+        commitment: "45-60 minutes per day",
+        weeks: [
+            {
+                week: 1,
+                title: "Week 1: Introduction to Study Start-Up",
+                phase: "First Read - Begin",
+                focus: "Foundation Building",
+                goals: [
+                    "Read Study Start-Up: Protocol & Regulations",
+                    "Review 10 flashcards on basic concepts",
+                    "Understand the three exam domains"
+                ],
+                tasks: [
+                    { task: "Read: Protocol Development section", done: false },
+                    { task: "Read: Regulatory Requirements section", done: false },
+                    { task: "Review: 10 flashcards (Start-Up)", done: false },
+                    { task: "Write: Summary of three exam domains", done: false }
+                ],
+                dailySchedule: "45-60 minutes daily: Reading or flashcards, not both",
+                tips: "Take it slow. Understanding is more important than speed."
+            },
+            {
+                week: 2,
+                title: "Week 2: Complete Study Start-Up",
+                phase: "First Read - Continue",
+                focus: "Study Start-Up Mastery",
+                goals: [
+                    "Complete Study Start-Up sections",
+                    "Review 15 more flashcards",
+                    "Create personal notes"
+                ],
+                tasks: [
+                    { task: "Read: Informed Consent section", done: false },
+                    { task: "Read: IRB/IEC & Essential Documents", done: false },
+                    { task: "Review: 15 flashcards (Start-Up)", done: false },
+                    { task: "Create: Personal notes on key Start-Up concepts", done: false }
+                ],
+                dailySchedule: "45-60 minutes daily: Alternate reading and flashcard days",
+                tips: "Connect study material to your actual work experiences."
+            },
+            {
+                week: 3,
+                title: "Week 3: Study Implementation - Part 1",
+                phase: "First Read - Continue",
+                focus: "GCP & Safety",
+                goals: [
+                    "Read GCP principles and adverse events sections",
+                    "Review 15 flashcards on implementation",
+                    "Take Quick Quiz"
+                ],
+                tasks: [
+                    { task: "Read: GCP Principles section", done: false },
+                    { task: "Read: Adverse Event Management section", done: false },
+                    { task: "Review: 15 flashcards (Implementation)", done: false },
+                    { task: "Take: Quick Quiz (20 questions)", done: false }
+                ],
+                dailySchedule: "Mon-Fri: 45 min reading or flashcards | Weekend: Quick quiz + review",
+                tips: "SAE vs AE is heavily tested. Make sure you understand the difference!"
+            },
+            {
+                week: 4,
+                title: "Week 4: Study Implementation - Part 2",
+                phase: "First Read - Continue",
+                focus: "Data & Monitoring",
+                goals: [
+                    "Complete Study Implementation sections",
+                    "Review 20 more flashcards",
+                    "Understand ALCOA+ principles"
+                ],
+                tasks: [
+                    { task: "Read: Data Integrity (ALCOA+) section", done: false },
+                    { task: "Read: Source Documents & IP Management", done: false },
+                    { task: "Read: Monitoring & Quality Assurance", done: false },
+                    { task: "Review: 20 flashcards (Implementation)", done: false }
+                ],
+                dailySchedule: "Daily: 45-60 minutes alternating reading and flashcards",
+                tips: "Implementation is 50% of the exam. Take your time here!"
+            },
+            {
+                week: 5,
+                title: "Week 5: Study Closure + First Read Complete",
+                phase: "First Read - Complete",
+                focus: "Closure & Review",
+                goals: [
+                    "Complete Study Closure sections",
+                    "Review ALL flashcards once",
+                    "Take domain practice test"
+                ],
+                tasks: [
+                    { task: "Read: All Study Closure sections", done: false },
+                    { task: "Review: ALL flashcards (complete set)", done: false },
+                    { task: "Take: Study Implementation practice test", done: false },
+                    { task: "Identify: 3 weak areas for extra focus", done: false }
+                ],
+                dailySchedule: "Days 1-3: Study Closure | Days 4-5: All flashcards | Weekend: Practice test",
+                tips: "You've completed the first read! Now the real learning begins."
+            },
+            {
+                week: 6,
+                title: "Week 6: Second Read - Making Connections",
+                phase: "Second Read",
+                focus: "Relationships",
+                goals: [
+                    "Re-read all study guide materials",
+                    "Focus on how concepts connect",
+                    "Review flashcards on weak areas"
+                ],
+                tasks: [
+                    { task: "Re-read: Study Start-Up (focus on connections)", done: false },
+                    { task: "Re-read: Study Implementation (focus on workflows)", done: false },
+                    { task: "Re-read: Study Closure (focus on timelines)", done: false },
+                    { task: "Review: Flashcards from weak areas daily", done: false }
+                ],
+                dailySchedule: "Daily: 45-60 minutes reading + 15 minutes flashcards",
+                tips: "Ask yourself: How does this concept relate to others? What's the workflow?"
+            },
+            {
+                week: 7,
+                title: "Week 7: Practice Testing",
+                phase: "Third Read + Testing",
+                focus: "Application",
+                goals: [
+                    "Quick third read",
+                    "Take full practice exam",
+                    "Review all incorrect answers",
+                    "Use AI Tutor for difficult topics"
+                ],
+                tasks: [
+                    { task: "Quick review: Skim all materials", done: false },
+                    { task: "Take: Full practice exam (100 questions)", done: false },
+                    { task: "Review: Every incorrect answer", done: false },
+                    { task: "Use AI Tutor: 5 confusing topics", done: false },
+                    { task: "Daily: Review flagged flashcards", done: false }
+                ],
+                dailySchedule: "Days 1-2: Quick read | Day 3: Full exam | Days 4-7: Review wrong answers",
+                tips: "Target 71%+. If below, add extra study time this week."
+            },
+            {
+                week: 8,
+                title: "Week 8: Final Preparation",
+                phase: "Final Polish",
+                focus: "Confidence & Readiness",
+                goals: [
+                    "Take second practice exam",
+                    "Review weak areas only",
+                    "Final flashcard review",
+                    "Exam logistics and mental prep"
+                ],
+                tasks: [
+                    { task: "Take: Second full practice exam", done: false },
+                    { task: "Review: Only weak areas and incorrect answers", done: false },
+                    { task: "Final: Flashcard review (focus on struggles)", done: false },
+                    { task: "Logistics: Confirm exam details", done: false },
+                    { task: "Day before: Light review, relax, good sleep", done: false }
+                ],
+                dailySchedule: "Days 1-2: Practice exam | Days 3-5: Weak areas | Day 6: Light review | Day 7: EXAM!",
+                tips: "If scoring 85%+ you're very ready! Trust your preparation and get good rest."
+            }
+        ]
+    }
+};
+
 const flashcardsData = [
     // Study Start-Up (40%)
     {

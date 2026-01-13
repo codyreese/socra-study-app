@@ -14,6 +14,8 @@ class StudyApp {
         this.currentTest = null;
         this.testAnswers = [];
         this.currentQuestionIndex = 0;
+        this.currentPlan = '6week';
+        this.planProgress = this.loadProgress('planProgress') || {};
 
         this.init();
     }
@@ -22,6 +24,7 @@ class StudyApp {
         this.setupEventListeners();
         this.updateDashboard();
         this.loadStudyGuide('startup');
+        this.loadStudyPlan(this.currentPlan);
         this.updateStreak();
         this.startSessionTimer();
     }
@@ -381,6 +384,111 @@ class StudyApp {
         });
 
         document.getElementById('studyContent').innerHTML = html;
+    }
+
+    // Study Plan Functions
+    loadStudyPlan(planType) {
+        this.currentPlan = planType;
+        const plan = studyPlans[planType];
+        if (!plan) return;
+
+        // Ensure progress exists for this plan
+        if (!this.planProgress[planType]) {
+            this.planProgress[planType] = {};
+        }
+
+        let html = `
+            <div class="plan-header">
+                <h3>${plan.title}</h3>
+                <p>${plan.description}</p>
+                <p><strong>Time Commitment:</strong> ${plan.commitment}</p>
+            </div>
+        `;
+
+        plan.weeks.forEach(week => {
+            const weekId = `${planType}-week${week.week}`;
+            const weekProgress = this.planProgress[planType][weekId] || { tasks: week.tasks.map(t => ({...t})) };
+
+            const completedTasks = weekProgress.tasks.filter(t => t.done).length;
+            const totalTasks = weekProgress.tasks.length;
+            const progressPercent = Math.round((completedTasks / totalTasks) * 100);
+
+            html += `
+                <div class="week-card">
+                    <div class="week-header">
+                        <h4>${week.title}</h4>
+                        <span class="phase-badge">${week.phase}</span>
+                    </div>
+                    <div class="week-progress">
+                        <div class="week-progress-bar">
+                            <div class="week-progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <span>${completedTasks}/${totalTasks} tasks complete</span>
+                    </div>
+                    <div class="week-details">
+                        <p><strong>Focus:</strong> ${week.focus}</p>
+                        <p><strong>Schedule:</strong> ${week.dailySchedule}</p>
+
+                        <div class="week-goals">
+                            <strong>This Week's Goals:</strong>
+                            <ul>
+                                ${week.goals.map(goal => `<li>${goal}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="week-tasks">
+                            <strong>Task Checklist:</strong>
+                            ${weekProgress.tasks.map((task, idx) => `
+                                <label class="task-item ${task.done ? 'done' : ''}">
+                                    <input type="checkbox"
+                                           ${task.done ? 'checked' : ''}
+                                           onchange="app.toggleTask('${weekId}', ${idx})">
+                                    <span>${task.task}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+
+                        <div class="week-tip">
+                            <strong>💡 Tip:</strong> ${week.tips}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        document.getElementById('studyPlanContent').innerHTML = html;
+
+        // Setup plan selector buttons
+        document.querySelectorAll('.plan-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.plan === planType) {
+                btn.classList.add('active');
+            }
+            btn.onclick = () => this.loadStudyPlan(btn.dataset.plan);
+        });
+    }
+
+    toggleTask(weekId, taskIndex) {
+        const [planType, weekPart] = weekId.split('-week');
+        if (!this.planProgress[planType]) {
+            this.planProgress[planType] = {};
+        }
+        if (!this.planProgress[planType][weekId]) {
+            const plan = studyPlans[planType];
+            const weekNum = parseInt(weekPart);
+            const weekData = plan.weeks.find(w => w.week === weekNum);
+            this.planProgress[planType][weekId] = { tasks: weekData.tasks.map(t => ({...t})) };
+        }
+
+        // Toggle the task
+        const task = this.planProgress[planType][weekId].tasks[taskIndex];
+        task.done = !task.done;
+
+        this.saveProgress('planProgress', this.planProgress);
+        this.loadStudyPlan(this.currentPlan);
+
+        const action = task.done ? 'Completed' : 'Uncompleted';
+        this.logActivity(`${action} study plan task: ${task.task.substring(0, 50)}...`);
     }
 
     // AI Tutor Functions

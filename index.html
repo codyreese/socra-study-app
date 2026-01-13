@@ -19,6 +19,7 @@
 
         <nav class="main-nav">
             <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+            <button class="nav-btn" data-section="study-plan">Study Plan</button>
             <button class="nav-btn" data-section="flashcards">Flashcards</button>
             <button class="nav-btn" data-section="practice-test">Practice Tests</button>
             <button class="nav-btn" data-section="study-guide">Study Guide</button>
@@ -65,9 +66,27 @@
                 </div>
                 <div class="quick-actions">
                     <h3>Quick Actions</h3>
+                    <button onclick="app.showSection('study-plan')" class="action-btn">View Study Plan</button>
                     <button onclick="app.showSection('flashcards')" class="action-btn">Start Flashcards</button>
                     <button onclick="app.showSection('practice-test')" class="action-btn">Take Practice Test</button>
                     <button onclick="app.showSection('ai-tutor')" class="action-btn">Ask AI Tutor</button>
+                </div>
+            </section>
+
+            <!-- Study Plan Section -->
+            <section id="study-plan" class="content-section">
+                <h2>Your Guided Study Plan</h2>
+                <div class="study-plan-intro">
+                    <p><strong>Based on SOCRA's recommended "Three-Read Method"</strong></p>
+                    <p>This 6-week plan follows the proven approach used by successful CCRP candidates. Each week builds on the previous one, ensuring thorough preparation.</p>
+                    <div class="plan-selector">
+                        <button class="plan-btn active" data-plan="6week">6-Week Plan (Recommended)</button>
+                        <button class="plan-btn" data-plan="4week">4-Week Intensive</button>
+                        <button class="plan-btn" data-plan="8week">8-Week Relaxed</button>
+                    </div>
+                </div>
+                <div id="studyPlanContent">
+                    <!-- Content loaded dynamically -->
                 </div>
             </section>
 

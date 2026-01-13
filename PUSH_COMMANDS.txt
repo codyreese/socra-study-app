@@ -1,0 +1,93 @@
+================================================================================
+                    COMMANDS TO PUSH TO GITHUB
+================================================================================
+
+STEP 1: Connect to your GitHub repository
+------------------------------------------
+Replace YOUR-USERNAME and REPO-NAME with your actual GitHub info:
+
+git remote add origin https://github.com/YOUR-USERNAME/REPO-NAME.git
+
+
+STEP 2: Rename branch to main (if needed)
+------------------------------------------
+git branch -M main
+
+
+STEP 3: Push your code
+------------------------------------------
+git push -u origin main
+
+
+ONE-LINER (copy all 3 commands at once):
+------------------------------------------
+git remote add origin https://github.com/YOUR-USERNAME/REPO-NAME.git && git branch -M main && git push -u origin main
+
+
+================================================================================
+                        AUTHENTICATION
+================================================================================
+
+When prompted for credentials:
+- Username: Your GitHub username
+- Password: Use a Personal Access Token (NOT your GitHub password)
+
+DON'T HAVE A TOKEN YET?
+1. Go to: https://github.com/settings/tokens
+2. Click: "Generate new token" → "Generate new token (classic)"
+3. Name it: "SOCRA Study App"
+4. Check the box: "repo" (full control of private repositories)
+5. Scroll down and click: "Generate token"
+6. COPY THE TOKEN (starts with ghp_) - you can't see it again!
+7. Use this token as your password when pushing
+
+================================================================================
+                    AFTER SUCCESSFUL PUSH
+================================================================================
+
+Go back to your GitHub repository page and:
+1. Refresh - you should see all your files!
+2. Click "Settings" tab
+3. Click "Pages" in left sidebar
+4. Under "Build and deployment":
+   - Source: Deploy from a branch
+   - Branch: Select "main"
+   - Folder: Select "/ (root)"
+5. Click "Save"
+6. Wait 2-3 minutes
+7. Refresh the Settings → Pages page
+8. You'll see a green box with your live URL!
+
+Your app URL will be:
+https://YOUR-USERNAME.github.io/REPO-NAME/
+
+================================================================================
+                        TROUBLESHOOTING
+================================================================================
+
+ERROR: "remote origin already exists"
+→ Run: git remote remove origin
+→ Then try Step 1 again
+
+ERROR: "Authentication failed"
+→ Make sure you're using Personal Access Token, not password
+→ Get token from: https://github.com/settings/tokens
+
+ERROR: "Permission denied"
+→ Check you're the owner of the repository
+→ Make sure token has "repo" permissions
+
+ERROR: "src refspec main does not match any"
+→ Make sure you've committed files: git commit -m "Initial commit"
+→ Check branch name: git branch (should show "main" or "master")
+
+================================================================================
+
+NEED HELP? Tell me:
+- Your GitHub username
+- The repository name you created
+- Any error message you see
+
+I'll give you the exact commands to run!
+
+================================================================================
