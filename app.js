@@ -765,6 +765,104 @@ Student's question: ${message}`
         this.saveProgress('activityLog', this.activityLog);
     }
 
+    // Export/Import Functions for Cross-Device Sync
+    exportProgress() {
+        // Gather all progress data
+        const progressData = {
+            cardProgress: this.cardProgress,
+            testResults: this.testResults,
+            studyStreak: this.studyStreak,
+            studyTime: this.studyTime,
+            activityLog: this.activityLog,
+            planProgress: this.planProgress,
+            exportDate: new Date().toISOString(),
+            version: '1.0'
+        };
+
+        // Convert to JSON
+        const dataStr = JSON.stringify(progressData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+        // Create download link
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `socra-progress-${new Date().toISOString().split('T')[0]}.json`;
+
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        this.logActivity('Exported progress to file');
+        alert('✅ Progress exported! Save this file to transfer to another device.');
+    }
+
+    importProgress() {
+        // Trigger file input
+        document.getElementById('importFile').click();
+    }
+
+    handleImportFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const progressData = JSON.parse(e.target.result);
+
+                // Validate data structure
+                if (!progressData.version || !progressData.exportDate) {
+                    throw new Error('Invalid progress file format');
+                }
+
+                // Confirm before overwriting
+                const confirmMsg = `Import progress from ${new Date(progressData.exportDate).toLocaleDateString()}?\n\nThis will replace your current progress on this device.`;
+                if (!confirm(confirmMsg)) {
+                    return;
+                }
+
+                // Import all data
+                this.cardProgress = progressData.cardProgress || {};
+                this.testResults = progressData.testResults || [];
+                this.studyStreak = progressData.studyStreak || { current: 0, lastDate: null };
+                this.studyTime = progressData.studyTime || 0;
+                this.activityLog = progressData.activityLog || [];
+                this.planProgress = progressData.planProgress || {};
+
+                // Save to localStorage
+                this.saveProgress('cardProgress', this.cardProgress);
+                this.saveProgress('testResults', this.testResults);
+                this.saveProgress('studyStreak', this.studyStreak);
+                this.saveProgress('studyTime', this.studyTime);
+                this.saveProgress('activityLog', this.activityLog);
+                this.saveProgress('planProgress', this.planProgress);
+
+                // Refresh display
+                this.updateDashboard();
+                this.updateAnalytics();
+                this.loadStudyPlan(this.currentPlan);
+
+                this.logActivity('Imported progress from file');
+                alert('✅ Progress imported successfully! Your data has been synced.');
+
+                // Reload page to ensure everything updates
+                setTimeout(() => location.reload(), 1000);
+
+            } catch (error) {
+                console.error('Import error:', error);
+                alert('❌ Error importing progress. Please make sure you selected a valid progress file.');
+            }
+        };
+
+        reader.readAsText(file);
+
+        // Reset file input
+        event.target.value = '';
+    }
+
     saveProgress(key, data) {
         localStorage.setItem(`socra_${key}`, JSON.stringify(data));
     }

@@ -1040,3 +1040,50 @@ html {
         width: 100%;
     }
 }
+
+/* Sync Progress Styles */
+.sync-section {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.sync-section h3 {
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+}
+
+.sync-section p {
+    margin: 10px 0;
+    color: var(--text-secondary);
+}
+
+.sync-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.sync-hint {
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .sync-buttons {
+        flex-direction: column;
+    }
+
+    .sync-buttons button {
+        width: 100%;
+    }
+}

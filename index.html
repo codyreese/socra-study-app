@@ -259,6 +259,19 @@
             <!-- Analytics Section -->
             <section id="analytics" class="content-section">
                 <h2>Your Learning Analytics</h2>
+
+                <!-- Progress Sync Section -->
+                <div class="sync-section">
+                    <h3>Sync Progress Across Devices</h3>
+                    <p>Use these tools to transfer your progress between devices (phone, work computer, home computer).</p>
+                    <div class="sync-buttons">
+                        <button onclick="app.exportProgress()" class="btn btn-primary">📥 Export Progress</button>
+                        <button onclick="app.importProgress()" class="btn btn-success">📤 Import Progress</button>
+                    </div>
+                    <p class="sync-hint"><strong>How it works:</strong> Export creates a file with your progress. Import that file on another device to sync!</p>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="app.handleImportFile(event)">
+                </div>
+
                 <div class="analytics-grid">
                     <div class="stat-card">
                         <h3>Study Streak</h3>
