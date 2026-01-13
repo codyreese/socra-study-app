@@ -753,7 +753,7 @@ class StudyApp {
                     'anthropic-dangerous-direct-browser-access': 'true'
                 },
                 body: JSON.stringify({
-                    model: 'claude-sonnet-4-20250514',
+                    model: 'claude-3-5-sonnet-latest',
                     max_tokens: 2048,
                     messages: [{
                         role: 'user',
