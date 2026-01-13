@@ -1106,7 +1106,7 @@ Student's question: ${message}`
         }
         const icon = document.getElementById('themeIcon');
         if (icon) {
-            // Moon for dark mode toggle, sun for light mode toggle
+            // Moon for light mode, sun for dark mode
             icon.innerHTML = theme === 'dark' ? '&#9788;' : '&#9790;';
         }
     }
