@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCRA CCRP Study Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SOCRA CCRP Study Assistant</h1>
+            <p class="subtitle">Clinical Research Professional Certification Prep</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="overallProgress"></div>
+                <span class="progress-text" id="progressText">0% Complete</span>
+            </div>
+        </header>
+
+        <nav class="main-nav">
+            <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+            <button class="nav-btn" data-section="flashcards">Flashcards</button>
+            <button class="nav-btn" data-section="practice-test">Practice Tests</button>
+            <button class="nav-btn" data-section="study-guide">Study Guide</button>
+            <button class="nav-btn" data-section="ai-tutor">AI Tutor</button>
+            <button class="nav-btn" data-section="analytics">Analytics</button>
+        </nav>
+
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h2>Welcome to Your SOCRA CCRP Study Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h3>Exam Overview</h3>
+                        <ul>
+                            <li>130 total questions (100 scored)</li>
+                            <li>Passing score: 71/100 (71%)</li>
+                            <li>Computer-based at Prometric centers</li>
+                            <li>Immediate score results</li>
+                        </ul>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Study Progress</h3>
+                        <p class="big-stat" id="cardsStudied">0/150</p>
+                        <p>Flashcards Reviewed</p>
+                        <p class="big-stat" id="testsCompleted">0</p>
+                        <p>Practice Tests Completed</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Exam Content Breakdown</h3>
+                        <ul>
+                            <li><strong>Study Start-Up</strong> (40%)</li>
+                            <li><strong>Study Implementation</strong> (50%)</li>
+                            <li><strong>Study Closure</strong> (10%)</li>
+                        </ul>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Your Performance</h3>
+                        <p class="big-stat" id="avgScore">--</p>
+                        <p>Average Test Score</p>
+                        <p class="big-stat" id="readinessScore">Not Ready</p>
+                        <p>Exam Readiness</p>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <button onclick="app.showSection('flashcards')" class="action-btn">Start Flashcards</button>
+                    <button onclick="app.showSection('practice-test')" class="action-btn">Take Practice Test</button>
+                    <button onclick="app.showSection('ai-tutor')" class="action-btn">Ask AI Tutor</button>
+                </div>
+            </section>
+
+            <!-- Flashcards Section -->
+            <section id="flashcards" class="content-section">
+                <h2>Flashcards</h2>
+                <div class="flashcard-controls">
+                    <label for="domainFilter">Filter by Domain:</label>
+                    <select id="domainFilter">
+                        <option value="all">All Domains</option>
+                        <option value="startup">Study Start-Up (40%)</option>
+                        <option value="implementation">Study Implementation (50%)</option>
+                        <option value="closure">Study Closure (10%)</option>
+                    </select>
+                    <button onclick="app.shuffleCards()" class="btn">Shuffle</button>
+                    <button onclick="app.resetProgress()" class="btn">Reset Progress</button>
+                </div>
+                <div class="flashcard-container">
+                    <div class="flashcard" id="flashcard" onclick="app.flipCard()">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p id="cardQuestion">Click "Start" to begin</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p id="cardAnswer">Answer will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <p id="cardNumber">Card 0 of 0</p>
+                        <span class="badge" id="cardDomain">Domain</span>
+                    </div>
+                    <div class="flashcard-buttons">
+                        <button onclick="app.previousCard()" class="btn">Previous</button>
+                        <button onclick="app.markKnown(false)" class="btn btn-danger">Don't Know</button>
+                        <button onclick="app.markKnown(true)" class="btn btn-success">Know It!</button>
+                        <button onclick="app.nextCard()" class="btn">Next</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Practice Test Section -->
+            <section id="practice-test" class="content-section">
+                <h2>Practice Tests</h2>
+                <div id="testSelection">
+                    <h3>Select a Practice Test</h3>
+                    <div class="test-options">
+                        <div class="test-card" onclick="app.startTest('full')">
+                            <h4>Full Practice Exam</h4>
+                            <p>100 questions, all domains</p>
+                            <p class="test-time">Recommended: 2-3 hours</p>
+                        </div>
+                        <div class="test-card" onclick="app.startTest('startup')">
+                            <h4>Study Start-Up</h4>
+                            <p>40 questions</p>
+                            <p class="test-time">~45 minutes</p>
+                        </div>
+                        <div class="test-card" onclick="app.startTest('implementation')">
+                            <h4>Study Implementation</h4>
+                            <p>50 questions</p>
+                            <p class="test-time">~60 minutes</p>
+                        </div>
+                        <div class="test-card" onclick="app.startTest('closure')">
+                            <h4>Study Closure</h4>
+                            <p>10 questions</p>
+                            <p class="test-time">~15 minutes</p>
+                        </div>
+                        <div class="test-card" onclick="app.startTest('quick')">
+                            <h4>Quick Quiz</h4>
+                            <p>20 random questions</p>
+                            <p class="test-time">~20 minutes</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="testInProgress" style="display: none;">
+                    <div class="test-header">
+                        <h3 id="testTitle">Practice Test</h3>
+                        <div class="test-progress">
+                            <span id="testQuestionNumber">Question 1 of 100</span>
+                            <button onclick="app.submitTest()" class="btn btn-primary">Submit Test</button>
+                        </div>
+                    </div>
+                    <div class="test-question" id="testQuestion">
+                        <p class="question-text" id="questionText"></p>
+                        <div class="answer-options" id="answerOptions"></div>
+                    </div>
+                    <div class="test-navigation">
+                        <button onclick="app.previousQuestion()" class="btn">Previous</button>
+                        <button onclick="app.flagQuestion()" class="btn" id="flagBtn">Flag for Review</button>
+                        <button onclick="app.nextQuestion()" class="btn">Next</button>
+                    </div>
+                </div>
+                <div id="testResults" style="display: none;">
+                    <h3>Test Results</h3>
+                    <div class="results-summary">
+                        <div class="result-stat">
+                            <p class="big-stat" id="finalScore">--</p>
+                            <p>Your Score</p>
+                        </div>
+                        <div class="result-stat">
+                            <p class="big-stat pass-fail" id="passFail">--</p>
+                            <p>Result</p>
+                        </div>
+                        <div class="result-stat">
+                            <p class="big-stat" id="correctAnswers">--</p>
+                            <p>Correct Answers</p>
+                        </div>
+                    </div>
+                    <div class="domain-breakdown">
+                        <h4>Performance by Domain</h4>
+                        <div id="domainResults"></div>
+                    </div>
+                    <button onclick="app.reviewTest()" class="btn btn-primary">Review Answers</button>
+                    <button onclick="app.showSection('practice-test')" class="btn">Take Another Test</button>
+                </div>
+            </section>
+
+            <!-- Study Guide Section -->
+            <section id="study-guide" class="content-section">
+                <h2>Study Guide</h2>
+                <div class="study-guide-nav">
+                    <button class="domain-btn active" data-domain="startup">Study Start-Up</button>
+                    <button class="domain-btn" data-domain="implementation">Study Implementation</button>
+                    <button class="domain-btn" data-domain="closure">Study Closure</button>
+                    <button class="domain-btn" data-domain="regulations">Key Regulations</button>
+                </div>
+                <div class="study-content" id="studyContent">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- AI Tutor Section -->
+            <section id="ai-tutor" class="content-section">
+                <h2>AI Study Assistant</h2>
+                <div class="ai-info">
+                    <p><strong>Note:</strong> You'll need an Anthropic API key to use this feature. The AI can answer questions, explain concepts, and adapt to your learning level.</p>
+                    <details class="api-setup">
+                        <summary>Setup API Key (Click to expand)</summary>
+                        <div class="setup-content">
+                            <ol>
+                                <li>Get an API key from <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></li>
+                                <li>Enter your API key below (it's stored only in your browser)</li>
+                                <li>Start asking questions about SOCRA CCRP topics!</li>
+                            </ol>
+                            <input type="password" id="apiKey" placeholder="sk-ant-..." class="api-input">
+                            <button onclick="app.saveApiKey()" class="btn btn-success">Save API Key</button>
+                        </div>
+                    </details>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-message assistant">
+                            <p>Hi! I'm your AI study assistant. I can help you with SOCRA CCRP topics, answer questions about clinical research, explain regulations, and adapt my explanations to your understanding level. What would you like to study today?</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <textarea id="chatInput" placeholder="Ask me anything about SOCRA CCRP topics..." rows="3"></textarea>
+                        <button onclick="app.sendMessage()" class="btn btn-primary" id="sendBtn">Send</button>
+                    </div>
+                    <div class="suggested-questions">
+                        <p><strong>Suggested questions:</strong></p>
+                        <button onclick="app.askSuggested(this)" class="suggestion-btn">What are the key responsibilities during study start-up?</button>
+                        <button onclick="app.askSuggested(this)" class="suggestion-btn">Explain the ICH-GCP E6(R3) guidelines</button>
+                        <button onclick="app.askSuggested(this)" class="suggestion-btn">What's the difference between an SAE and AE?</button>
+                        <button onclick="app.askSuggested(this)" class="suggestion-btn">Quiz me on informed consent requirements</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="content-section">
+                <h2>Your Learning Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="stat-card">
+                        <h3>Study Streak</h3>
+                        <p class="big-stat" id="studyStreak">0</p>
+                        <p>Days in a row</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Study Time</h3>
+                        <p class="big-stat" id="totalTime">0h</p>
+                        <p>Time invested</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Mastery Level</h3>
+                        <p class="big-stat" id="masteryLevel">Beginner</p>
+                        <p>Current level</p>
+                    </div>
+                </div>
+                <div class="domain-mastery">
+                    <h3>Domain Mastery</h3>
+                    <div class="mastery-bar">
+                        <label>Study Start-Up</label>
+                        <div class="bar"><div class="bar-fill" style="width: 0%" id="startupMastery"></div></div>
+                        <span id="startupPercent">0%</span>
+                    </div>
+                    <div class="mastery-bar">
+                        <label>Study Implementation</label>
+                        <div class="bar"><div class="bar-fill" style="width: 0%" id="implementationMastery"></div></div>
+                        <span id="implementationPercent">0%</span>
+                    </div>
+                    <div class="mastery-bar">
+                        <label>Study Closure</label>
+                        <div class="bar"><div class="bar-fill" style="width: 0%" id="closureMastery"></div></div>
+                        <span id="closurePercent">0%</span>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <ul id="activityLog">
+                        <li>No activity yet. Start studying to see your progress!</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
