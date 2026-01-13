@@ -1396,8 +1396,13 @@ header {
     color: white;
 }
 
-[data-theme="dark"] h3 {
+[data-theme="dark"] h3,
+[data-theme="dark"] .guide-section h3 {
     color: var(--text-primary);
+}
+
+[data-theme="dark"] .modal-content {
+    background: var(--surface);
 }
 
 [data-theme="dark"] .stat-card h3 {
