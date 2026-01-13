@@ -101,17 +101,27 @@
                         <option value="implementation">Study Implementation (50%)</option>
                         <option value="closure">Study Closure (10%)</option>
                     </select>
+                    <button onclick="app.toggleViewMode()" class="btn btn-primary" id="viewModeBtn">📋 List View</button>
                     <button onclick="app.shuffleCards()" class="btn">Shuffle</button>
                     <button onclick="app.resetProgress()" class="btn">Reset Progress</button>
+                </div>
+
+                <!-- List View (All Cards with Answers) -->
+                <div id="listView" style="display: none;">
+                    <div class="list-view-container" id="listViewContent">
+                        <!-- Cards will be loaded here -->
+                    </div>
                 </div>
                 <div class="flashcard-container">
                     <div class="flashcard" id="flashcard" onclick="app.flipCard()">
                         <div class="flashcard-inner">
                             <div class="flashcard-front">
                                 <p id="cardQuestion">Click "Start" to begin</p>
+                                <p class="flip-hint">👆 Click card to see answer</p>
                             </div>
                             <div class="flashcard-back">
                                 <p id="cardAnswer">Answer will appear here</p>
+                                <p class="flip-hint">👆 Click card to go back</p>
                             </div>
                         </div>
                     </div>

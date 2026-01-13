@@ -251,6 +251,74 @@ h4 {
     cursor: pointer;
 }
 
+/* List View Styles */
+.list-view-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.list-card {
+    background: var(--surface);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+}
+
+.list-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.list-card-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 40px;
+    text-align: center;
+}
+
+.list-card-content {
+    flex: 1;
+}
+
+.list-question {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #dbeafe;
+    border-left: 4px solid var(--primary-color);
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.list-answer {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #d1fae5;
+    border-left: 4px solid var(--success-color);
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.list-domain {
+    text-align: right;
+}
+
+@media (max-width: 768px) {
+    .list-card {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .list-card-number {
+        text-align: left;
+    }
+}
+
 .flashcard-container {
     max-width: 800px;
     margin: 0 auto;
@@ -305,6 +373,13 @@ h4 {
     font-size: 1.3rem;
     text-align: center;
     line-height: 1.8;
+}
+
+.flip-hint {
+    font-size: 0.9rem !important;
+    opacity: 0.8;
+    margin-top: 20px;
+    font-style: italic;
 }
 
 .card-info {

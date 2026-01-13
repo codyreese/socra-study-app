@@ -187,6 +187,55 @@ class StudyApp {
         }
     }
 
+    toggleViewMode() {
+        const listView = document.getElementById('listView');
+        const flashcardContainer = document.querySelector('.flashcard-container');
+        const button = document.getElementById('viewModeBtn');
+
+        if (listView.style.display === 'none') {
+            // Switch to list view
+            listView.style.display = 'block';
+            flashcardContainer.style.display = 'none';
+            button.textContent = '🎴 Card View';
+            this.loadListView();
+        } else {
+            // Switch back to card view
+            listView.style.display = 'none';
+            flashcardContainer.style.display = 'block';
+            button.textContent = '📋 List View';
+        }
+    }
+
+    loadListView() {
+        const container = document.getElementById('listViewContent');
+        let html = '';
+
+        if (this.flashcards.length === 0) {
+            html = '<p style="text-align: center; color: var(--text-secondary); padding: 40px;">No cards available for this filter</p>';
+        } else {
+            this.flashcards.forEach((card, index) => {
+                html += `
+                    <div class="list-card">
+                        <div class="list-card-number">${index + 1}</div>
+                        <div class="list-card-content">
+                            <div class="list-question">
+                                <strong>Q:</strong> ${card.question}
+                            </div>
+                            <div class="list-answer">
+                                <strong>A:</strong> ${card.answer}
+                            </div>
+                            <div class="list-domain">
+                                <span class="badge">${this.getDomainName(card.domain)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        container.innerHTML = html;
+    }
+
     // Practice Test Functions
     startTest(testType) {
         let questions = [];
