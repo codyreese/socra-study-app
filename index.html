@@ -9,6 +9,12 @@
 <body>
     <div class="container">
         <header>
+            <div class="header-controls">
+                <button class="header-btn" id="helpBtn" title="How to Use">?</button>
+                <button class="header-btn" id="themeToggle" title="Toggle Dark Mode">
+                    <span id="themeIcon">&#9790;</span>
+                </button>
+            </div>
             <h1>SOCRA CCRP Study Assistant</h1>
             <p class="subtitle">Clinical Research Professional Certification Prep</p>
             <p class="subtitle" style="font-size: 0.9rem; opacity: 0.85; margin-top: -10px;">Supporting Huntsman Cancer Institute Research Coordinators</p>
@@ -326,6 +332,79 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Welcome/Instructions Modal -->
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Welcome to SOCRA CCRP Study Assistant</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="guide-section">
+                    <h3>Getting Started</h3>
+                    <p>This comprehensive study tool is designed to help you prepare for the SOCRA CCRP certification exam. Here's how to make the most of your study time:</p>
+                </div>
+
+                <div class="guide-section">
+                    <h3>Features Overview</h3>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <h4>Dashboard</h4>
+                            <p>Track your overall progress, view exam info, and access quick actions.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>Study Plan</h4>
+                            <p>Follow structured 4, 6, or 8-week plans based on the Three-Read Method.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>Flashcards</h4>
+                            <p>Review 150+ cards with spaced repetition. Filter by domain and track mastery.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>Practice Tests</h4>
+                            <p>Take timed mock exams with detailed review and explanations.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>Study Guide</h4>
+                            <p>In-depth content covering all three exam domains with key concepts.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>AI Tutor</h4>
+                            <p>Get personalized help and explanations (requires API key setup).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-section">
+                    <h3>Tips for Success</h3>
+                    <ul>
+                        <li><strong>Follow the Study Plan:</strong> The structured approach ensures comprehensive coverage of all exam topics.</li>
+                        <li><strong>Use Flashcards Daily:</strong> Regular review helps move information to long-term memory.</li>
+                        <li><strong>Take Practice Tests:</strong> Simulate exam conditions to build confidence and identify weak areas.</li>
+                        <li><strong>Review Incorrect Answers:</strong> After tests, study the explanations for questions you missed.</li>
+                        <li><strong>Track Your Progress:</strong> Use Analytics to monitor your growth and adjust study focus.</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>Exam Content Breakdown</h3>
+                    <ul>
+                        <li><strong>Study Start-Up (40%):</strong> Protocol development, IRB, informed consent, site selection</li>
+                        <li><strong>Study Implementation (50%):</strong> Subject enrollment, data management, safety reporting, monitoring</li>
+                        <li><strong>Study Closure (10%):</strong> Close-out procedures, record retention, final reports</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <label class="dont-show-again">
+                    <input type="checkbox" id="dontShowAgain">
+                    Don't show this again
+                </label>
+                <button class="action-btn" id="getStartedBtn">Get Started</button>
+            </div>
+        </div>
     </div>
 
     <script src="data.js"></script>

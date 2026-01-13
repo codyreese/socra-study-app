@@ -23,6 +23,8 @@ class StudyApp {
 
     init() {
         this.setupEventListeners();
+        this.initTheme();
+        this.checkFirstVisit();
         this.updateDashboard();
         this.loadStudyGuide('startup');
         this.loadStudyPlan(this.currentPlan);
@@ -57,6 +59,32 @@ class StudyApp {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 this.sendMessage();
+            }
+        });
+
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            this.toggleTheme();
+        });
+
+        // Help button
+        document.getElementById('helpBtn').addEventListener('click', () => {
+            this.showWelcomeModal();
+        });
+
+        // Modal close buttons
+        document.getElementById('closeModal').addEventListener('click', () => {
+            this.hideWelcomeModal();
+        });
+
+        document.getElementById('getStartedBtn').addEventListener('click', () => {
+            this.hideWelcomeModal();
+        });
+
+        // Close modal on overlay click
+        document.getElementById('welcomeModal').addEventListener('click', (e) => {
+            if (e.target.id === 'welcomeModal') {
+                this.hideWelcomeModal();
             }
         });
     }
@@ -1055,6 +1083,52 @@ Student's question: ${message}`
     loadProgress(key) {
         const data = localStorage.getItem(`socra_${key}`);
         return data ? JSON.parse(data) : null;
+    }
+
+    // Theme Management
+    initTheme() {
+        const savedTheme = localStorage.getItem('socra_theme') || 'light';
+        this.setTheme(savedTheme);
+    }
+
+    toggleTheme() {
+        const isDark = document.documentElement.hasAttribute('data-theme');
+        const newTheme = isDark ? 'light' : 'dark';
+        this.setTheme(newTheme);
+        localStorage.setItem('socra_theme', newTheme);
+    }
+
+    setTheme(theme) {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        const icon = document.getElementById('themeIcon');
+        if (icon) {
+            // Moon for dark mode toggle, sun for light mode toggle
+            icon.innerHTML = theme === 'dark' ? '&#9788;' : '&#9790;';
+        }
+    }
+
+    // Welcome Modal Management
+    checkFirstVisit() {
+        const hideWelcome = localStorage.getItem('socra_hideWelcome');
+        if (!hideWelcome) {
+            this.showWelcomeModal();
+        }
+    }
+
+    showWelcomeModal() {
+        document.getElementById('welcomeModal').classList.add('active');
+    }
+
+    hideWelcomeModal() {
+        const dontShowAgain = document.getElementById('dontShowAgain').checked;
+        if (dontShowAgain) {
+            localStorage.setItem('socra_hideWelcome', 'true');
+        }
+        document.getElementById('welcomeModal').classList.remove('active');
     }
 }
 
