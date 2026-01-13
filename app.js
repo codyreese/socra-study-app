@@ -711,8 +711,8 @@ class StudyApp {
             alert('Please enter an API key');
             return;
         }
-        if (!apiKey.startsWith('sk-ant-')) {
-            alert('Invalid API key format. Anthropic API keys start with "sk-ant-"');
+        if (!apiKey.startsWith('sk-')) {
+            alert('Invalid API key format. Anthropic API keys start with "sk-"');
             return;
         }
         localStorage.setItem('anthropic_api_key', apiKey);
@@ -753,7 +753,7 @@ class StudyApp {
                     'anthropic-dangerous-direct-browser-access': 'true'
                 },
                 body: JSON.stringify({
-                    model: 'claude-3-5-sonnet-20241022',
+                    model: 'claude-sonnet-4-20250514',
                     max_tokens: 2048,
                     messages: [{
                         role: 'user',
@@ -777,7 +777,9 @@ Student's question: ${message}`
             });
 
             if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
+                const errorData = await response.json().catch(() => ({}));
+                const errorMsg = errorData.error?.message || `API error: ${response.status}`;
+                throw new Error(errorMsg);
             }
 
             const data = await response.json();
