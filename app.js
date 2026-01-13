@@ -16,6 +16,7 @@ class StudyApp {
         this.currentQuestionIndex = 0;
         this.currentPlan = '6week';
         this.planProgress = this.loadProgress('planProgress') || {};
+        this.reviewMode = null;
 
         this.init();
     }
@@ -413,8 +414,143 @@ class StudyApp {
     }
 
     reviewTest() {
-        // TODO: Implement detailed review showing each question, selected answer, correct answer, and explanation
-        alert('Review feature coming soon! For now, you can retake the test to see which questions you missed.');
+        // Store current test for review
+        this.reviewMode = {
+            questions: this.currentTest.questions,
+            answers: [...this.testAnswers]
+        };
+
+        // Hide results, show review
+        document.getElementById('testResults').style.display = 'none';
+        document.getElementById('testInProgress').style.display = 'block';
+        document.getElementById('testTitle').textContent = this.currentTest.title + ' - Review';
+
+        // Change header to show review mode
+        document.getElementById('testQuestionNumber').innerHTML = `
+            <span style="color: var(--primary-color); font-weight: bold;">📝 Review Mode</span> - Question 1 of ${this.reviewMode.questions.length}
+        `;
+
+        this.currentQuestionIndex = 0;
+        this.displayReviewQuestion();
+    }
+
+    displayReviewQuestion() {
+        const question = this.reviewMode.questions[this.currentQuestionIndex];
+        const userAnswer = this.reviewMode.answers[this.currentQuestionIndex];
+        const isCorrect = userAnswer === question.correct;
+
+        // Update header
+        document.getElementById('testQuestionNumber').innerHTML = `
+            <span style="color: var(--primary-color); font-weight: bold;">📝 Review Mode</span> - Question ${this.currentQuestionIndex + 1} of ${this.reviewMode.questions.length}
+        `;
+
+        // Show question with result indicator
+        const resultBadge = isCorrect
+            ? '<span style="background: var(--success-color); color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold;">✓ Correct</span>'
+            : '<span style="background: var(--danger-color); color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold;">✗ Incorrect</span>';
+
+        document.getElementById('questionText').innerHTML = `
+            <div style="margin-bottom: 15px;">${resultBadge}</div>
+            ${question.question}
+        `;
+
+        // Show all options with indicators
+        const optionsHtml = question.options.map((option, index) => {
+            let optionClass = 'answer-option';
+            let indicator = '';
+
+            if (index === question.correct) {
+                // This is the correct answer
+                optionClass += ' correct-answer';
+                indicator = '<span style="color: var(--success-color); font-weight: bold; margin-left: 10px;">✓ Correct Answer</span>';
+            }
+
+            if (index === userAnswer && !isCorrect) {
+                // This was the user's wrong answer
+                optionClass += ' wrong-answer';
+                indicator = '<span style="color: var(--danger-color); font-weight: bold; margin-left: 10px;">✗ Your Answer</span>';
+            }
+
+            if (index === userAnswer && isCorrect) {
+                // User got it right
+                indicator = '<span style="color: var(--success-color); font-weight: bold; margin-left: 10px;">✓ Your Answer</span>';
+            }
+
+            return `
+                <div class="${optionClass}">
+                    <label style="flex: 1; display: flex; align-items: center; justify-content: space-between;">
+                        <span>${option}</span>
+                        ${indicator}
+                    </label>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('answerOptions').innerHTML = optionsHtml;
+
+        // Show explanation if available
+        if (question.explanation) {
+            document.getElementById('answerOptions').innerHTML += `
+                <div style="margin-top: 25px; padding: 20px; background: #fef3c7; border-left: 4px solid var(--warning-color); border-radius: 8px;">
+                    <strong style="color: var(--text-primary);">💡 Explanation:</strong>
+                    <p style="margin-top: 10px; line-height: 1.6; color: var(--text-primary);">${question.explanation}</p>
+                </div>
+            `;
+        }
+
+        // Update navigation buttons
+        const prevBtn = document.querySelector('.test-navigation .btn:first-child');
+        const nextBtn = document.querySelector('.test-navigation .btn:last-child');
+        const flagBtn = document.getElementById('flagBtn');
+
+        prevBtn.textContent = this.currentQuestionIndex === 0 ? 'Back to Results' : 'Previous';
+        nextBtn.textContent = this.currentQuestionIndex === this.reviewMode.questions.length - 1 ? 'Back to Results' : 'Next';
+        flagBtn.style.display = 'none'; // Hide flag button in review mode
+    }
+
+    previousQuestion() {
+        if (this.reviewMode) {
+            // In review mode
+            if (this.currentQuestionIndex === 0) {
+                // Go back to results
+                this.exitReview();
+            } else {
+                this.currentQuestionIndex--;
+                this.displayReviewQuestion();
+            }
+        } else {
+            // Normal test mode
+            if (this.currentQuestionIndex > 0) {
+                this.currentQuestionIndex--;
+                this.displayQuestion();
+            }
+        }
+    }
+
+    nextQuestion() {
+        if (this.reviewMode) {
+            // In review mode
+            if (this.currentQuestionIndex === this.reviewMode.questions.length - 1) {
+                // Go back to results
+                this.exitReview();
+            } else {
+                this.currentQuestionIndex++;
+                this.displayReviewQuestion();
+            }
+        } else {
+            // Normal test mode
+            if (this.currentQuestionIndex < this.currentTest.questions.length - 1) {
+                this.currentQuestionIndex++;
+                this.displayQuestion();
+            }
+        }
+    }
+
+    exitReview() {
+        this.reviewMode = null;
+        document.getElementById('testInProgress').style.display = 'none';
+        document.getElementById('testResults').style.display = 'block';
+        document.getElementById('flagBtn').style.display = 'inline-block'; // Show flag button again
     }
 
     // Study Guide Functions

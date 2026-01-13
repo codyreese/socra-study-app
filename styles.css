@@ -552,6 +552,16 @@ h4 {
     background: #dbeafe;
 }
 
+.answer-option.correct-answer {
+    border-color: var(--success-color);
+    background: #d1fae5;
+}
+
+.answer-option.wrong-answer {
+    border-color: var(--danger-color);
+    background: #fee2e2;
+}
+
 .answer-option input[type="radio"] {
     width: 20px;
     height: 20px;
