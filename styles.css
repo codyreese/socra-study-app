@@ -1303,7 +1303,8 @@ header {
     padding: 30px;
     overflow-y: auto;
     max-height: calc(85vh - 100px);
-    color: var(--text-primary);
+    color: #1a1a1a;
+    background: #ffffff;
 }
 
 .guide-section {
@@ -1320,16 +1321,17 @@ header {
 
 .guide-section ul {
     margin-left: 20px;
-    color: var(--text-primary);
+    color: #1a1a1a;
 }
 
 .guide-section li {
     margin-bottom: 8px;
     line-height: 1.5;
+    color: #1a1a1a;
 }
 
 .guide-section p {
-    color: var(--text-primary);
+    color: #1a1a1a;
     line-height: 1.6;
 }
 
@@ -1348,7 +1350,7 @@ header {
 }
 
 .feature-item h4 {
-    color: var(--text-primary);
+    color: #1a1a1a;
     margin-bottom: 5px;
     font-size: 0.95rem;
 }
@@ -1356,7 +1358,7 @@ header {
 .feature-item p {
     font-size: 0.85rem;
     margin: 0;
-    color: var(--text-primary);
+    color: #1a1a1a;
 }
 
 .modal-footer {
@@ -1403,6 +1405,15 @@ header {
 
 [data-theme="dark"] .modal-content {
     background: var(--surface);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .guide-section ul,
+[data-theme="dark"] .guide-section li,
+[data-theme="dark"] .guide-section p,
+[data-theme="dark"] .feature-item h4,
+[data-theme="dark"] .feature-item p {
+    color: var(--text-primary);
 }
 
 [data-theme="dark"] .stat-card h3 {
